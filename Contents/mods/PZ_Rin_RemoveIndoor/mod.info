@@ -1,0 +1,8 @@
+poster=poster.png
+id=PZ_Rin_RemoveIndoor
+name=Rin Remove Indoor
+description=Built for version B41.78! There are no plans to support B42...<LINE><LINE>
+description=
+description=SAFE TO ADD/REMOVE MID-GAME!<LINE><LINE>
+description=
+description=Allows to remove pre-built/existing indoor areas from the server via context menu if you're ADMIN (or in Single Player)

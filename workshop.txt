@@ -1,0 +1,20 @@
+version=1
+id=
+title=Rin Remove Indoor
+description=[u] Revamped and Updated version of that works in MULTIPLAYER: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2860603412] Remove Pre-existing Indoor [/url] [/u]
+description=
+description=[b] Built for version B41.78! [/b][i] There are no plans to support B42... [/i]
+description=
+description=
+description=[h2] DESCRIPTION [/h2]
+description=
+description=SAFE TO ADD/REMOVE MID-GAME!
+description=
+description=Allows to remove pre-built/existing indoor areas from the server via context menu if you're ADMIN (or in Single Player)
+description=
+description=
+description=[h2]FOUND AN ISSUE?[/h2]
+description=
+description=Please, raise this issue on my GitHub: [url]https://github.com/drag0no/PZ_Rin_RemoveIndoor/issues[/url]
+tags=Build 41;Building
+visibility=public
