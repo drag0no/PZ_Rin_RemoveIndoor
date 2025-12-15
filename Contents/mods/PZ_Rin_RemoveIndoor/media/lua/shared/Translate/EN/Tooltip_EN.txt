@@ -5,5 +5,6 @@ Tooltip_EN = {
 	Tooltip_RemoveIndoor_ChosenCoordinate = "Coordinate set: ",
 	Tooltip_RemoveIndoor_RemoveExec = "Remove Pre-Existing Indoor Area",
 	Tooltip_RemoveIndoor_RemoveSay = "Finished removing Pre-Existing Indoor Area",
+	Tooltip_RemoveIndoor_CancelSelect = "Cancel Selection",
 	Tooltip_RemoveIndoor_CancelDiffZ = "Cancellation: They're on different floors",
 }
