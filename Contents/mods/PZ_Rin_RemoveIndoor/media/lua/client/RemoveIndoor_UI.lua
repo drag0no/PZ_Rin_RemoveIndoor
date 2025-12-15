@@ -27,8 +27,17 @@ local function isAllSet()
             RemoveIndoor.coords.x2 and RemoveIndoor.coords.y2 and RemoveIndoor.coords.z2
 end
 
-local function normalizeCoords()
+local function clearCoords()
+    RemoveIndoor.coords = {}
+end
+
+local function normalizeCoords(player)
     if not isAllSet() then
+        return
+    end
+    if RemoveIndoor.coords.z1 ~= RemoveIndoor.coords.z2 then
+        player:Say(getText("Tooltip_RemoveIndoor_CancelDiffZ"))
+        clearCoords()
         return
     end
     if RemoveIndoor.coords.x1 > RemoveIndoor.coords.x2 then
@@ -37,10 +46,14 @@ local function normalizeCoords()
     if RemoveIndoor.coords.y1 > RemoveIndoor.coords.y2 then
         RemoveIndoor.coords.y1, RemoveIndoor.coords.y2 = RemoveIndoor.coords.y2, RemoveIndoor.coords.y1
     end
+    player:Say(getText("Tooltip_RemoveIndoor_ChosenCoordinate")
+            .. (RemoveIndoor.coords.x2 - RemoveIndoor.coords.x1 + 1)
+            .. " x "
+            .. (RemoveIndoor.coords.y2 - RemoveIndoor.coords.y1 + 1))
 end
 
-local function getCoordinates(flootObject)
-    return flootObject:getX(), flootObject:getY(), flootObject:getZ()
+local function getCoordinates(floorObject)
+    return floorObject:getX(), floorObject:getY(), floorObject:getZ()
 end
 
 local function isPlayerAdmin(player)
@@ -54,16 +67,6 @@ local function isPlayerAdmin(player)
         return player:getAccessLevel() == "admin"
     end
     return false
-end
-
-local function saySquare(player)
-    if not isAllSet() then
-        return
-    end
-    player:Say(getText("Tooltip_RemoveIndoor_ChosenCoordinate")
-            .. (RemoveIndoor.coords.x2 - RemoveIndoor.coords.x1 + 1)
-            .. " x "
-            .. (RemoveIndoor.coords.y2 - RemoveIndoor.coords.y1 + 1))
 end
 
 function RemoveIndoor.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _)
@@ -90,36 +93,30 @@ function RemoveIndoor.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _
     subMenu:addOption(coordinate1, _worldObjects, function()
         local coords = RemoveIndoor.coords
         coords.x1, coords.y1, coords.z1 = getCoordinates(_worldObjects[1])
-        normalizeCoords()
-        saySquare(player)
+        normalizeCoords(player)
     end)
 
     subMenu:addOption(coordinate2, _worldObjects, function()
         local coords = RemoveIndoor.coords
         coords.x2, coords.y2, coords.z2 = getCoordinates(_worldObjects[1])
-        normalizeCoords()
-        saySquare(player)
+        normalizeCoords(player)
     end)
 
     if isOneSet() then
         subMenu:addOption(getText("Tooltip_RemoveIndoor_CancelSelect"), _worldObjects, function()
-            RemoveIndoor.coords = {}
+            clearCoords()
         end)
     end
 
     if isAllSet() then
         subMenu:addOption(getText("Tooltip_RemoveIndoor_RemoveExec"), _worldObjects, function()
             local coords = RemoveIndoor.coords
-            if coords.z1 ~= coords.z2 then
-                player:Say(getText("Tooltip_RemoveIndoor_CancelDiffZ"))
-                return
-            end
 
             local args = { minX = coords.x1, minY = coords.y1, maxX = coords.x2, maxY = coords.y2, z = coords.z1 }
             sendClientCommand(player, "RemoveIndoor", "ClearIndoorArea", args)
 
             player:Say(getText("Tooltip_RemoveIndoor_RemoveSay"))
-            RemoveIndoor.coords = {}
+            clearCoords()
         end)
     end
 end
