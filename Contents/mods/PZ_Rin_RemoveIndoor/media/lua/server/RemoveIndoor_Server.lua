@@ -1,24 +1,49 @@
--- Handle the command from a client (requires the client to send the command and the player to have rights)
-local function onClientCommand(module, command, playerObj, args)
-    if module ~= "RemoveIndoor" then return end
+require "RemoveIndoor_Logic"
 
-    local isSinglePlayer = not isMP
-    local isAdmin = isClient() and playerObj and playerObj:getAccessLevel() == "admin"
-    if not (isSinglePlayer or isAdmin) then
-        RILog("Unauthorized attempt to use ClearIndoorArea command.")
+local function extractCoords(args)
+    return tonumber(args.minX), tonumber(args.minY), tonumber(args.maxX), tonumber(args.maxY), tonumber(args.z)
+end
+
+local function isAdmin(playerObj)
+    if not (RI_MOD.IsSinglePlayer() or RI_MOD.IsServerAdmin(playerObj)) then
+        RI_MOD.Log("Unauthorized attempt to use ClearIndoorArea command.")
+        return false
+    end
+    return true
+end
+
+local function sendIndoorRemovedData()
+    if not isServer() then
+        -- don't need to send updates to the client in a SinglePlayer
         return
     end
+    RI_MOD.Log("Sent IndoorRemovedDataUpdate")
+    sendServerCommand("RemoveIndoor", "IndoorRemovedDataUpdate", RI_MOD.SaveData.removed)
+end
 
-    if command == "ClearIndoorArea" then
-        -- Validate and convert arguments received from the client (they come as strings/numbers from the client args table)
-        local minX = tonumber(args.minX)
-        local minY = tonumber(args.minY)
-        local maxX = tonumber(args.maxX)
-        local maxY = tonumber(args.maxY)
-        local z = tonumber(args.z)
+function RI_MOD.OnClientCommand(module, command, playerObj, args)
+    if module ~= "RemoveIndoor" then return end
 
-        clearIndoorArea(minX, minY, maxX, maxY, z)
+    if command == "AddIndoorAreaRemoval" and isAdmin(playerObj) then
+        minX, minY, maxX, maxY, z = extractCoords(args)
+        RI_MOD.AddIndoorAreaRemoval(minX, minY, maxX, maxY, z)
+        sendIndoorRemovedData()
+    elseif command == "DeleteIndoorAreaRemoval" and isAdmin(playerObj) then
+        minX, minY, maxX, maxY, z = extractCoords(args)
+        RI_MOD.DeleteIndoorAreaRemoval(minX, minY, maxX, maxY, z)
+    elseif command == "IndoorRemovedDataUpdate" then
+        sendIndoorRemovedData()
     end
 end
 
-Events.OnClientCommand.Add(onClientCommand)
+function RI_MOD.OnServerLoad()
+    RI_MOD.LoadSaveData()
+    if not isServer() then
+        -- render changes straight away in a Single Player
+        RI_MOD.ClientProcessRemovedIndoorData(RI_MOD.SaveData.removed)
+    end
+end
+
+Events.OnClientCommand.Add(RI_MOD.OnClientCommand)
+Events.OnServerStarted.Add(RI_MOD.OnServerLoad)
+Events.OnLoad.Add(RI_MOD.OnServerLoad)

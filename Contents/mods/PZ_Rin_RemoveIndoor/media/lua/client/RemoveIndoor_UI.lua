@@ -1,21 +1,21 @@
-RemoveIndoor = RemoveIndoor or { coords = {} }
+require "RemoveIndoor_Logic"
 
 local function coords1ToString()
-    local coords = RemoveIndoor.coords
+    local coords = RI_MOD.WorkData.coords
     return string.format("%d,%d,%d", coords.x1, coords.y1, coords.z1)
 end
 
 local function coords2ToString()
-    local coords = RemoveIndoor.coords
+    local coords = RI_MOD.WorkData.coords
     return string.format("%d,%d,%d", coords.x2, coords.y2, coords.z2)
 end
 
 local function isCoord1Set()
-    return RemoveIndoor.coords.x1 and RemoveIndoor.coords.y1 and RemoveIndoor.coords.z1
+    return RI_MOD.WorkData.coords.x1 and RI_MOD.WorkData.coords.y1 and RI_MOD.WorkData.coords.z1
 end
 
 local function isCoord2Set()
-    return RemoveIndoor.coords.x2 and RemoveIndoor.coords.y2 and RemoveIndoor.coords.z2
+    return RI_MOD.WorkData.coords.x2 and RI_MOD.WorkData.coords.y2 and RI_MOD.WorkData.coords.z2
 end
 
 local function isOneSet()
@@ -23,59 +23,46 @@ local function isOneSet()
 end
 
 local function isAllSet()
-    return RemoveIndoor.coords.x1 and RemoveIndoor.coords.y1 and RemoveIndoor.coords.z1 and
-            RemoveIndoor.coords.x2 and RemoveIndoor.coords.y2 and RemoveIndoor.coords.z2
+    return RI_MOD.WorkData.coords.x1 and RI_MOD.WorkData.coords.y1 and RI_MOD.WorkData.coords.z1 and
+            RI_MOD.WorkData.coords.x2 and RI_MOD.WorkData.coords.y2 and RI_MOD.WorkData.coords.z2
 end
 
 local function clearCoords()
-    RemoveIndoor.coords = {}
+    RI_MOD.WorkData.coords = {}
 end
 
 local function normalizeCoords(player)
     if not isAllSet() then
         return
     end
-    if RemoveIndoor.coords.z1 ~= RemoveIndoor.coords.z2 then
+    if RI_MOD.WorkData.coords.z1 ~= RI_MOD.WorkData.coords.z2 then
         player:Say(getText("Tooltip_RemoveIndoor_CancelDiffZ"))
         clearCoords()
         return
     end
-    if RemoveIndoor.coords.x1 > RemoveIndoor.coords.x2 then
-        RemoveIndoor.coords.x1, RemoveIndoor.coords.x2 = RemoveIndoor.coords.x2, RemoveIndoor.coords.x1
+    if RI_MOD.WorkData.coords.x1 > RI_MOD.WorkData.coords.x2 then
+        RI_MOD.WorkData.coords.x1, RI_MOD.WorkData.coords.x2 = RI_MOD.WorkData.coords.x2, RI_MOD.WorkData.coords.x1
     end
-    if RemoveIndoor.coords.y1 > RemoveIndoor.coords.y2 then
-        RemoveIndoor.coords.y1, RemoveIndoor.coords.y2 = RemoveIndoor.coords.y2, RemoveIndoor.coords.y1
+    if RI_MOD.WorkData.coords.y1 > RI_MOD.WorkData.coords.y2 then
+        RI_MOD.WorkData.coords.y1, RI_MOD.WorkData.coords.y2 = RI_MOD.WorkData.coords.y2, RI_MOD.WorkData.coords.y1
     end
     player:Say(getText("Tooltip_RemoveIndoor_ChosenCoordinate")
-            .. (RemoveIndoor.coords.x2 - RemoveIndoor.coords.x1 + 1)
+            .. (RI_MOD.WorkData.coords.x2 - RI_MOD.WorkData.coords.x1 + 1)
             .. " x "
-            .. (RemoveIndoor.coords.y2 - RemoveIndoor.coords.y1 + 1))
+            .. (RI_MOD.WorkData.coords.y2 - RI_MOD.WorkData.coords.y1 + 1))
 end
 
 local function getCoordinates(floorObject)
     return floorObject:getX(), floorObject:getY(), floorObject:getZ()
 end
 
-local function isPlayerAdmin(player)
-    if not isClient() then
-        return true
-    end
-    if isClient() then
-        return player:isAdmin()
-    end
-    if isServer() then
-        return player:getAccessLevel() == "admin"
-    end
-    return false
-end
-
-function RemoveIndoor.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _)
-    local player = getPlayer();
-    if not isPlayerAdmin(player) then
-       return;
+function RI_MOD.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _)
+    local player = getPlayer()
+    if not (RI_MOD.IsSinglePlayer() or RI_MOD.IsServerAdmin(player)) then
+        return;
     end
 
-    local removeIndoorOption = _context:addOption(getText("Tooltip_RemoveIndoor_Option"), worldobjects);
+    local removeIndoorOption = _context:addOption(getText("Tooltip_RemoveIndoor_Option"), _worldObjects);
 
     local subMenu = ISContextMenu:getNew(_context);
 	_context:addSubMenu(removeIndoorOption, subMenu);
@@ -91,13 +78,13 @@ function RemoveIndoor.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _
     end
 
     subMenu:addOption(coordinate1, _worldObjects, function()
-        local coords = RemoveIndoor.coords
+        local coords = RI_MOD.WorkData.coords
         coords.x1, coords.y1, coords.z1 = getCoordinates(_worldObjects[1])
         normalizeCoords(player)
     end)
 
     subMenu:addOption(coordinate2, _worldObjects, function()
-        local coords = RemoveIndoor.coords
+        local coords = RI_MOD.WorkData.coords
         coords.x2, coords.y2, coords.z2 = getCoordinates(_worldObjects[1])
         normalizeCoords(player)
     end)
@@ -110,15 +97,19 @@ function RemoveIndoor.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _
 
     if isAllSet() then
         subMenu:addOption(getText("Tooltip_RemoveIndoor_RemoveExec"), _worldObjects, function()
-            local coords = RemoveIndoor.coords
-
+            local coords = RI_MOD.WorkData.coords
             local args = { minX = coords.x1, minY = coords.y1, maxX = coords.x2, maxY = coords.y2, z = coords.z1 }
-            sendClientCommand(player, "RemoveIndoor", "ClearIndoorArea", args)
-
+            sendClientCommand(player, "RemoveIndoor", "AddIndoorAreaRemoval", args)
             player:Say(getText("Tooltip_RemoveIndoor_RemoveSay"))
+            clearCoords()
+        end)
+
+        subMenu:addOption(getText("Tooltip_RemoveIndoor_RevertExec"), _worldObjects, function()
+            local coords = RI_MOD.WorkData.coords
+            local args = { minX = coords.x1, minY = coords.y1, maxX = coords.x2, maxY = coords.y2, z = coords.z1 }
+            sendClientCommand(player, "RemoveIndoor", "DeleteIndoorAreaRemoval", args)
+            player:Say(getText("Tooltip_RemoveIndoor_RevertSay"))
             clearCoords()
         end)
     end
 end
-
-Events.OnFillWorldObjectContextMenu.Add(RemoveIndoor.OnFillWorldObjectContextMenu)
