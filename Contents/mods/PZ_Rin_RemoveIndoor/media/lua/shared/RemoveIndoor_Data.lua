@@ -18,7 +18,7 @@ end
 
 function RI_MOD.InitWorkData()
     RI_MOD.Log("Init WorkData")
-    RI_MOD.WorkData = { coords = {} }
+    RI_MOD.WorkData = { coords = {}, removed = {} }
 end
 
 function RI_MOD.LoadSaveData()

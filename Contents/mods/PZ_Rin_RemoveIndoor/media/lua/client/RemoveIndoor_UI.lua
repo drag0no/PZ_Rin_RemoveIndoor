@@ -113,3 +113,5 @@ function RI_MOD.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _)
         end)
     end
 end
+
+Events.OnFillWorldObjectContextMenu.Add(RI_MOD.OnFillWorldObjectContextMenu)

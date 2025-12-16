@@ -13,12 +13,12 @@ local function isAdmin(playerObj)
 end
 
 local function sendIndoorRemovedData()
-    if not isServer() then
-        -- don't need to send updates to the client in a SinglePlayer
-        return
-    end
     RI_MOD.Log("Sent IndoorRemovedDataUpdate")
-    sendServerCommand("RemoveIndoor", "IndoorRemovedDataUpdate", RI_MOD.SaveData.removed)
+    if RI_MOD.IsSinglePlayer() then
+        RI_MOD.OnServerCommand("RemoveIndoor", "IndoorRemovedDataUpdate", RI_MOD.SaveData.removed)
+    else
+        sendServerCommand("RemoveIndoor", "IndoorRemovedDataUpdate", RI_MOD.SaveData.removed)
+    end
 end
 
 function RI_MOD.OnClientCommand(module, command, playerObj, args)
@@ -38,12 +38,8 @@ end
 
 function RI_MOD.OnServerLoad()
     RI_MOD.LoadSaveData()
-    if not isServer() then
-        -- render changes straight away in a Single Player
-        RI_MOD.ClientProcessRemovedIndoorData(RI_MOD.SaveData.removed)
-    end
 end
 
 Events.OnClientCommand.Add(RI_MOD.OnClientCommand)
-Events.OnServerStarted.Add(RI_MOD.OnServerLoad)
-Events.OnLoad.Add(RI_MOD.OnServerLoad)
+Events.OnServerStarted.Add(RI_MOD.OnServerLoad) -- multi player
+Events.OnLoad.Add(RI_MOD.OnServerLoad) -- single player
