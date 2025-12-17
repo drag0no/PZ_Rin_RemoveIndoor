@@ -1,5 +1,5 @@
 version=1
-id=
+id=3625442561
 title=Rin Remove Pre-Built Indoor
 description=[u] Revamped and Updated version of the mod below that correctly works in MULTIPLAYER:
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2860603412] Remove Pre-existing Indoor [/url] [/u]
@@ -35,5 +35,5 @@ description=
 description=[h2]FOUND AN ISSUE?[/h2]
 description=
 description=Please, raise this issue on my GitHub: [url]https://github.com/drag0no/PZ_Rin_RemoveIndoor/issues[/url]
-tags=Build 41;Building;QoL
+tags=Build 41;Building;Realistic
 visibility=public
