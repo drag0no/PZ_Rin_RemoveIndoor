@@ -14,7 +14,7 @@ end
 function RI_MOD.OnGridSquareLoad(sq)
     local x, y, z = sq:getX(), sq:getY(), sq:getZ()
     local coordKey = RI_MOD.GetCoordKey(x ,y, z)
-    if not RI_MOD.WorkData.removed[coordKey] then
+    if not RI_MOD.WorkData.removed or not RI_MOD.WorkData.removed[coordKey] then
         return
     end
 
