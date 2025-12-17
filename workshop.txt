@@ -35,4 +35,5 @@ description=
 description=[h2]FOUND AN ISSUE?[/h2]
 description=
 description=Please, raise this issue on my GitHub: [url]https://github.com/drag0no/PZ_Rin_RemoveIndoor/issues[/url]
+tags=Build 41;Building;QoL
 visibility=public
