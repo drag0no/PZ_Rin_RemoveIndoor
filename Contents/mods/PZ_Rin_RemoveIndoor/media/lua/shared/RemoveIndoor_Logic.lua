@@ -39,11 +39,11 @@ local function deleteIndoorSquareRemoval(x, y, z)
     RI_MOD.Log(coordKey .. ": RemoveIndoor deleted")
 end
 
-local function execIndoorSquareRemoval(x, y, z)
+local function execIndoorSquareRemoval(x, y, z, doLog)
     local coordKey = RI_MOD.GetCoordKey(x, y, z)
     local sq = getSquare(x, y, z)
     if not sq then
-        RI_MOD.Log(coordKey .. ": unloaded Chunk/Square")
+        if doLog then RI_MOD.Log(coordKey .. ": unloaded Chunk/Square") end
         return
     end
 
@@ -53,9 +53,9 @@ local function execIndoorSquareRemoval(x, y, z)
         sq:setRoom(nil)
         sq:setRoomID(-1)
         sq:RecalcAllWithNeighbours(false)
-        RI_MOD.Log(("%s: setRoom(nil) & setRoomID(-1) / Outside: %s -> %s"):format(coordKey, tostring(isOutside), tostring(sq:isOutside())))
+        if doLog then RI_MOD.Log(("%s: setRoom(nil) & setRoomID(-1) / Outside: %s -> %s"):format(coordKey, tostring(isOutside), tostring(sq:isOutside()))) end
     else
-        RI_MOD.Log(coordKey .. ": no Room")
+        if doLog then RI_MOD.Log(coordKey .. ": no Room") end
     end
 end
 
@@ -86,21 +86,21 @@ function RI_MOD.DeleteIndoorAreaRemoval(minX, minY, maxX, maxY, z)
 end
 
 function RI_MOD.ClientProcessGridSquareLoad(x, y, z)
-    execIndoorSquareRemoval(x, y, z)
+    execIndoorSquareRemoval(x, y, z, true)
 end
 
 function RI_MOD.ClientProcessAllRemovedIndoorData(removed)
     if not removed then
-        RI_MOD.Log("No IndoorRemovedData for Processing")
+        RI_MOD.Log("No IndoorRemovedData for Batch Processing")
         return
     end
 
-    RI_MOD.Log("Starting all IndoorRemovedData Processing")
-    for key, value in pairs(removed) do
+    local count = 0
+    for _, value in pairs(removed) do
         if value then
-            execIndoorSquareRemoval(value.x, value.y, value.z)
-        else
-            RI_MOD.Log(key .. ": `nil` data for square")
+            execIndoorSquareRemoval(value.x, value.y, value.z, false)
+            count = count + 1
         end
     end
+    RI_MOD.Log("IndoorRemovedData Batch Processing done: " .. count .. " GridSquares proccesed")
 end

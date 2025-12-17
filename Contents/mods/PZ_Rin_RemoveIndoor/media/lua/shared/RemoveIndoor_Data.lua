@@ -29,13 +29,16 @@ function RI_MOD.LoadSaveData()
 
     RI_MOD.Log("ModData Load")
     RI_MOD.SaveData = ModData.getOrCreate(RI_DATAKEY)
-    if RI_MOD.SaveData.removed then
-        for key, _ in pairs(RI_MOD.SaveData.removed) do
-            RI_MOD.Log(key .. ": IndoorRemovedData loaded")
-        end
-    else
+
+    if not RI_MOD.SaveData.removed then
         RI_MOD.SaveData.removed = {}
         RI_MOD.Log("No SavedData. Initilized a new one.")
         return
     end
+
+    local count = 0
+    for _, _ in pairs(RI_MOD.SaveData.removed) do
+        count = count + 1
+    end
+    RI_MOD.Log("IndoorRemovedData Loaded: " .. count .. " GridSquares loaded")
 end
