@@ -1,15 +1,15 @@
 version=1
 id=3625442561
 title=Rin Remove Pre-Built Indoor
-description=[u] Revamped and Updated version of the mod below that correctly works in MULTIPLAYER:
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2860603412] Remove Pre-existing Indoor [/url] [/u]
+description=[u] Revamped, Updated and Fixed version of the mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2860603412] Remove Pre-existing Indoor [/url] [/u]
 description=
 description=[b] Built for version B41.78! [/b][i] There are no plans to support B42... [/i]
 description=
 description=
 description=[h2] DESCRIPTION [/h2]
 description=
-description=SAFE TO ADD/REMOVE MID-GAME!
+description=- SAFE TO ADD/REMOVE MID-GAME!
+description=- WORKS IN MULTIPLAYER!
 description=
 description=Frustrated by black rectangles or odd lighting after tearing down pre-built non-player structures? This mod is designed to fix exactly that.
 description=
