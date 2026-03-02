@@ -1,8 +1,6 @@
-poster=poster.png
 id=Rin_RemoveIndoor
 name=Rin Remove Pre-Built Indoor
-description=Built for version B41.78! There are no plans to support B42...<LINE><LINE>
+poster=poster.png
+description=Allows to remove pre-built/existing indoor areas from the server via context menu (available to Admins in multiplayer or in single‑player).<LINE><LINE>
 description=
-description=SAFE TO ADD/REMOVE MID-GAME!<LINE><LINE>
-description=
-description=Allows to remove pre-built/existing indoor areas from the server via context menu (available to Admins in multiplayer or in single‑player).
+description=SAFE TO ADD/REMOVE MID-GAME!
