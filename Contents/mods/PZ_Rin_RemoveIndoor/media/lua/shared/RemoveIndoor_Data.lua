@@ -3,7 +3,7 @@ RI_MOD = RI_MOD or {}
 RI_DATAKEY = "RI_MOD"
 
 function RI_MOD.Log(msg)
-    print("Rin_RemoveIndoor: " .. tostring(msg))
+    print("[RRI] " .. tostring(msg))
 end
 
 function RI_MOD.IsSinglePlayer()
