@@ -1,0 +1,9 @@
+id=Rin_RemoveIndoor
+name=Rin Remove Pre-Built Indoor
+poster=poster.png
+description=Allows to remove pre-built/existing indoor areas from the server via context menu (available to Admins in multiplayer or in single‑player).<LINE><LINE>
+description=
+description=SAFE TO ADD/REMOVE MID-GAME!
+author=Rinski
+icon=icon.png
+versionMin=42.0.0
