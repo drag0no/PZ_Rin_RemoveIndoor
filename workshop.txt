@@ -3,7 +3,7 @@ id=3625442561
 title=Rin Remove Pre-Built Indoor [B41/B42]
 description=[u] Revamped and updated version of the mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2860603412] Remove Pre-existing Indoor [/url] [/u]
 description=
-description=[b] Built for version B41.78+ and B42.13+! [/b]
+description=[b] Built for version B41.78+ and B42.21+! [/b]
 description=
 description=
 description=[h2] DESCRIPTION [/h2]

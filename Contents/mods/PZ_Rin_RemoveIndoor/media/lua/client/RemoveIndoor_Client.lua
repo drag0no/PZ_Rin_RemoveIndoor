@@ -22,8 +22,11 @@ function RI_MOD.OnGridSquareLoad(sq)
 end
 
 function RI_MOD.OnClientLoad()
+    local player = getPlayer()
+    if not player then return end
+
     RI_MOD.Log("Client requested IndoorRemovedDataUpdate")
-    sendClientCommand(getPlayer(), "RemoveIndoor", "IndoorRemovedDataUpdate", nil)
+    sendClientCommand(player, "RemoveIndoor", "IndoorRemovedDataUpdate", nil)
     Events.OnTick.Remove(RI_MOD.OnClientLoad)
 end
 

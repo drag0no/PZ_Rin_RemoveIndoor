@@ -25,11 +25,11 @@ function RI_MOD.OnClientCommand(module, command, playerObj, args)
     if module ~= "RemoveIndoor" then return end
 
     if command == "AddIndoorAreaRemoval" and isAdmin(playerObj) then
-        minX, minY, maxX, maxY, z = extractCoords(args)
+        local minX, minY, maxX, maxY, z = extractCoords(args)
         RI_MOD.AddIndoorAreaRemoval(minX, minY, maxX, maxY, z)
         sendIndoorRemovedData()
     elseif command == "DeleteIndoorAreaRemoval" and isAdmin(playerObj) then
-        minX, minY, maxX, maxY, z = extractCoords(args)
+        local minX, minY, maxX, maxY, z = extractCoords(args)
         RI_MOD.DeleteIndoorAreaRemoval(minX, minY, maxX, maxY, z)
     elseif command == "IndoorRemovedDataUpdate" then
         sendIndoorRemovedData()

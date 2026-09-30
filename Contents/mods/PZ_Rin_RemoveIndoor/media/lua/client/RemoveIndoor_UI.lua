@@ -56,16 +56,18 @@ local function getCoordinates(floorObject)
     return floorObject:getX(), floorObject:getY(), floorObject:getZ()
 end
 
-function RI_MOD.OnFillWorldObjectContextMenu(_, _context, _worldObjects, _)
-    local player = getPlayer()
+function RI_MOD.OnFillWorldObjectContextMenu(playerNum, _context, _worldObjects, test)
+    if test then return true end
+
+    local player = (playerNum and getSpecificPlayer(playerNum)) or getPlayer()
     if not (RI_MOD.IsSinglePlayer() or RI_MOD.IsServerAdmin(player)) then
-        return;
+        return
     end
 
-    local removeIndoorOption = _context:addOption(getText("Tooltip_RemoveIndoor_Option"), _worldObjects);
+    local removeIndoorOption = _context:addOption(getText("Tooltip_RemoveIndoor_Option"), _worldObjects)
 
-    local subMenu = ISContextMenu:getNew(_context);
-	_context:addSubMenu(removeIndoorOption, subMenu);
+    local subMenu = ISContextMenu:getNew(_context)
+    _context:addSubMenu(removeIndoorOption, subMenu)
 
     local coordinate1 = getText("Tooltip_RemoveIndoor_SetCoordinate1")
     if isCoord1Set() then
