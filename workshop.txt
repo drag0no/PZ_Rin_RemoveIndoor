@@ -2,8 +2,9 @@ version=1
 id=3625442561
 title=Rin Remove Pre-Built Indoor [B41/B42]
 description=[u] Revamped and updated version of the mod: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2860603412] Remove Pre-existing Indoor [/url] [/u]
-description=
 description=[b] Built for version B41.78+ and B42.21+! [/b]
+description=
+description=[b]Build 42 Note[/b]: Due to the overhauled lighting system in B42, this mod is no longer required for visual lighting fixes. However, it may still be helpful to set proper in-building markers if you build on top of a demolished building.
 description=
 description=
 description=[h2] DESCRIPTION [/h2]
