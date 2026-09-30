@@ -5,7 +5,7 @@ local function extractCoords(args)
 end
 
 local function isAdmin(playerObj)
-    if not (RI_MOD.IsSinglePlayer() or RI_MOD.IsServerAdmin(playerObj)) then
+    if not RI_MOD.HasAdminAccess(playerObj) then
         RI_MOD.Log("Unauthorized attempt to use ClearIndoorArea command.")
         return false
     end

@@ -60,7 +60,7 @@ function RI_MOD.OnFillWorldObjectContextMenu(playerNum, _context, _worldObjects,
     if test then return true end
 
     local player = (playerNum and getSpecificPlayer(playerNum)) or getPlayer()
-    if not (RI_MOD.IsSinglePlayer() or RI_MOD.IsServerAdmin(player)) then
+    if not RI_MOD.HasAdminAccess(player) then
         return
     end
 

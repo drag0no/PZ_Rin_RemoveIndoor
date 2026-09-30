@@ -16,6 +16,16 @@ function RI_MOD.IsServerAdmin(player)
     return access == "admin"
 end
 
+function RI_MOD.HasAdminAccess(player)
+    if RI_MOD.IsServerAdmin(player) then
+        return true
+    end
+    if RI_MOD.IsSinglePlayer() and getDebug and getDebug() then
+        return true
+    end
+    return false
+end
+
 function RI_MOD.InitWorkData()
     RI_MOD.Log("Init WorkData")
     RI_MOD.WorkData = { coords = {}, removed = {} }
